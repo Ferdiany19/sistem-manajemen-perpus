@@ -19,7 +19,7 @@ public class BookServiceImp implements BookService {
             throw new BookNotFoundException("Judul buku Masih Kosong");
         }
         if (book.getPenerbit() == "") {
-            throw new BookNotFoundException("Penerbit bobukuok Masih Kosong");
+            throw new BookNotFoundException("Penerbit buku Masih Kosong");
         }
         if (book.getPengarang() == "") {
             throw new BookNotFoundException("Pengarang Buku Masih Kosong");

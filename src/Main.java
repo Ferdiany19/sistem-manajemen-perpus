@@ -61,6 +61,7 @@ public class Main {
                         kembaliBuku(scanner);
                         break;
                     default:
+                        System.out.println("Input salah!");
                         break;
                 }
 
@@ -96,7 +97,7 @@ public class Main {
                 2. Lihat Daftar Buku
                 3. Cari Buku
                 4. Hapus Buku
-                5. Edit Buku
+                5. Edit Buku (unimplemented)
                 6. Tambah Anggota
                 7. Pinjam Buku
                 8. Kembalikan Buku
@@ -111,11 +112,11 @@ public class Main {
         System.out.print("Masukkan username: ");
         String username = scanner.nextLine();
 
-        System.out.print("Masukkan Password: ");
-        String password = scanner.nextLine();
+        System.out.print("Masukkan email: ");
+        String email = scanner.nextLine();
 
         for (int i = 0; i < 1; i++) {
-            user = new User(username, password);
+            user = new User(username, email);
             userService.createUser(user);
         }
 
@@ -144,6 +145,7 @@ public class Main {
             bookService.createBook(book);
         }
 
+        // tampilkan list buku
         List<Book> resultsListBooks = bookService.getAllBook();
         for (int i = 0; i < resultsListBooks.size(); i++) {
             System.out.println((i + 1) + ". " + resultsListBooks.get(i));
@@ -168,6 +170,7 @@ public class Main {
     private static void cariBuku(Scanner scanner) {
         System.out.println("========CARI BUKU=========\n\n");
 
+        // list buku dan id nya
         List<Book> results = bookService.getAllBook();
         if (results.isEmpty()) {
             System.out.println("Data masih kosong!");
@@ -186,6 +189,7 @@ public class Main {
     private static void hapusBuku(Scanner scanner) {
         System.out.println("========HAPUS BUKU=========\n\n");
 
+        // list buku yang ditampilkam
         List<Book> results = bookService.getAllBook();
         if (results.isEmpty()) {
             System.out.println("Data masih kosong!");
@@ -217,14 +221,19 @@ public class Main {
     private static void pinjamBuku(Scanner scanner) {
 
         List<Book> results = bookService.getAllBook();
-        if (results.isEmpty()) {
+        List<User> resultsUser = userService.getAllUsers();
+        if (results.isEmpty() || resultsUser.isEmpty()) {
             System.out.println("Data masih kosong!");
         } else {
+            // tampilkan daftar buku
             for (int i = 0; i < results.size(); i++) {
                 System.out.println((i + 1) + ". " + results.get(i) + "\n\n");
-            }
 
-            System.out.println("0. Batal");
+            }
+            // tampilkan daftar user
+            for (int i = 0; i < resultsUser.size(); i++) {
+                System.out.println((i + 1) + ". " + resultsUser.get(i) + "\n\n");
+            }
 
             System.out.println("Masukkan ID buku: ");
             Integer idBuku = Integer.valueOf(scanner.nextLine());
@@ -235,6 +244,13 @@ public class Main {
 
             Borrow borrow = new Borrow(bookBorrowed, userBorrowed);
             borrowService.createBorrow(borrow);
+            System.out.println("Buku telah dipinjam");
+
+            System.out.println("=====BUKU YANG TELAH DIPINJAM=======");
+            List<Borrow> result = borrowService.getAllBorrow();
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println((i + 1) + ". " + result.get(i));
+            }
         }
     }
 
@@ -249,5 +265,11 @@ public class Main {
         Integer idBorrowed = Integer.valueOf(scanner.nextLine());
         Borrow pengembalianBuku = borrowService.getBorrowById(idBorrowed);
         borrowService.returnBook(idBorrowed, pengembalianBuku);
+
+        System.out.println("=====BUKU YANG TELAH DIKEMBALIKAN========");
+        List<Borrow> results = borrowService.getAllBorrow();
+        for (int i = 0; i < results.size(); i++) {
+            System.out.println((i + 1) + ". " + result.get(i));
+        }
     }
 }

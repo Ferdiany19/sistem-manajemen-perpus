@@ -21,20 +21,17 @@ public class UserDao implements BaseDao<User, Integer> {
 
     @Override
     public User findById(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        return this.users.get(id - 1);
     }
 
     @Override
     public void update(Integer id, User data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        this.users.set(id - 1, data);
     }
 
     @Override
     public void delete(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        this.users.remove(id - 1);
     }
 
 }

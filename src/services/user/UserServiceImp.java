@@ -17,10 +17,10 @@ public class UserServiceImp implements UserService {
     @Override
     public void createUser(User user) {
         if (user.getUsername() == "") {
-            throw new UserNotFoundException("Username Masih Kosong");
+            throw new UserNotFoundException("Username masih kosong!");
         }
         if (user.getEmail() == "") {
-            throw new UserNotFoundException("Email Masih Kosong");
+            throw new UserNotFoundException("Email masih kosong!");
         }
         userDao.save(user);
         System.out.println("User berhasil ditambahkan!");
@@ -33,7 +33,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User getUserById(Integer id) {
-        if (id > getAllUsers().size() || id < 1) {
+        if (id > getAllUsers().size()) {
             throw new UserNotFoundException("User tidak ditemukan");
         }
         return this.userDao.findById(id);
