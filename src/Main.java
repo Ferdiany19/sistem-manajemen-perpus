@@ -1,12 +1,17 @@
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
 import dao.BookDao;
+import dao.BorrowDao;
 import dao.UserDao;
 import models.Book;
+import models.Borrow;
 import models.User;
 import services.book.BookService;
 import services.book.BookServiceImp;
+import services.borrow.BorrowService;
+import services.borrow.BorrowServiceImp;
 import services.user.UserService;
 import services.user.UserServiceImp;
 
@@ -17,6 +22,9 @@ public class Main {
 
     static UserDao userDao = new UserDao();
     static UserService userService = new UserServiceImp(userDao);
+
+    static BorrowDao borrowDao = new BorrowDao();
+    static BorrowService borrowService = new BorrowServiceImp(borrowDao);
 
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
@@ -44,24 +52,13 @@ public class Main {
                     case "5":
                         break;
                     case "6":
-                        System.out.println("=====TAMBAH ANGGOTA=======");
-                        User user = new User();
-
-                        System.out.print("Masukkan username: ");
-                        String username = scanner.nextLine();
-
-                        System.out.print("Masukkan Password: ");
-                        String password = scanner.nextLine();
-
-                        for (int i = 0; i < 1; i++) {
-                            user = new User(username, password);
-                            userService.createUser(user);
-                        }
-
-                        List<User> resultsUser = userService.getAllUsers();
-                        for (int i = 0; i < resultsUser.size(); i++) {
-                            System.out.println((i + 1) + ". " + resultsUser.get(i));
-                        }
+                        tambahAnggota(scanner);
+                        break;
+                    case "7":
+                        pinjamBuku(scanner);
+                        break;
+                    case "8":
+                        kembaliBuku(scanner);
                         break;
                     default:
                         break;
@@ -105,6 +102,27 @@ public class Main {
                 8. Kembalikan Buku
                 """);
         System.out.print("Masukkan pilihan: ");
+    }
+
+    private static void tambahAnggota(Scanner scanner) {
+        System.out.println("=====TAMBAH ANGGOTA=======");
+        User user = new User();
+
+        System.out.print("Masukkan username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Masukkan Password: ");
+        String password = scanner.nextLine();
+
+        for (int i = 0; i < 1; i++) {
+            user = new User(username, password);
+            userService.createUser(user);
+        }
+
+        List<User> resultsUser = userService.getAllUsers();
+        for (int i = 0; i < resultsUser.size(); i++) {
+            System.out.println((i + 1) + ". " + resultsUser.get(i));
+        }
     }
 
     private static void tambahBuku(Scanner scanner) {
@@ -194,5 +212,42 @@ public class Main {
                 mainMenu();
             }
         }
+    }
+
+    private static void pinjamBuku(Scanner scanner) {
+
+        List<Book> results = bookService.getAllBook();
+        if (results.isEmpty()) {
+            System.out.println("Data masih kosong!");
+        } else {
+            for (int i = 0; i < results.size(); i++) {
+                System.out.println((i + 1) + ". " + results.get(i) + "\n\n");
+            }
+
+            System.out.println("0. Batal");
+
+            System.out.println("Masukkan ID buku: ");
+            Integer idBuku = Integer.valueOf(scanner.nextLine());
+            Book bookBorrowed = bookService.getBookById(idBuku);
+            System.out.println("Masukkan ID User: ");
+            Integer idUser = Integer.valueOf(scanner.nextLine());
+            User userBorrowed = userService.getUserById(idUser);
+
+            Borrow borrow = new Borrow(bookBorrowed, userBorrowed);
+            borrowService.createBorrow(borrow);
+        }
+    }
+
+    private static void kembaliBuku(Scanner scanner) {
+
+        List<Borrow> result = borrowService.getAllBorrow();
+        for (int i = 0; i < result.size(); i++) {
+            System.out.println((i + 1) + ". " + result.get(i));
+        }
+
+        System.out.print("Masukkan ID peminjaman: ");
+        Integer idBorrowed = Integer.valueOf(scanner.nextLine());
+        Borrow pengembalianBuku = borrowService.getBorrowById(idBorrowed);
+        borrowService.returnBook(idBorrowed, pengembalianBuku);
     }
 }

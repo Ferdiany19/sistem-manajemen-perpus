@@ -3,6 +3,7 @@ package services.book;
 import java.util.List;
 
 import dao.BookDao;
+import exception.BookNotFoundException;
 import models.Book;
 
 public class BookServiceImp implements BookService {
@@ -15,7 +16,13 @@ public class BookServiceImp implements BookService {
     @Override
     public void createBook(Book book) {
         if (book.getJudul() == "") {
-            // Exception
+            throw new BookNotFoundException("Judul buku Masih Kosong");
+        }
+        if (book.getPenerbit() == "") {
+            throw new BookNotFoundException("Penerbit bobukuok Masih Kosong");
+        }
+        if (book.getPengarang() == "") {
+            throw new BookNotFoundException("Pengarang Buku Masih Kosong");
         }
 
         bookDao.save(book);
@@ -25,10 +32,14 @@ public class BookServiceImp implements BookService {
     @Override
     public List<Book> getAllBook() {
         return bookDao.findAll();
+
     }
 
     @Override
     public Book getBookById(Integer id) {
+        if (id > bookDao.findAll().size() || id < 1) {
+            throw new BookNotFoundException("Buku tidak ditemukan");
+        }
         return bookDao.findById(id);
     }
 

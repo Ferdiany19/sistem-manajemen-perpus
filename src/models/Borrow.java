@@ -4,15 +4,13 @@ import java.time.LocalDate;
 
 public class Borrow {
     private Book book;
-    private User peminjam;
+    private User user;
     private LocalDate tanggalPinjam;
     private LocalDate tanggalKembali;
 
-    public Borrow(Book book, User peminjam, LocalDate tanggalPinjam, LocalDate tanggalKembali) {
+    public Borrow(Book book, User user) {
         this.book = book;
-        this.peminjam = peminjam;
-        this.tanggalPinjam = tanggalPinjam;
-        this.tanggalKembali = tanggalKembali;
+        this.user = user;
     }
 
     public Book getBook() {
@@ -23,12 +21,12 @@ public class Borrow {
         this.book = book;
     }
 
-    public User getPeminjam() {
-        return peminjam;
+    public User getUser() {
+        return user;
     }
 
-    public void setPeminjam(User peminjam) {
-        this.peminjam = peminjam;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDate getTanggalPinjam() {
@@ -49,8 +47,11 @@ public class Borrow {
 
     @Override
     public String toString() {
-        return "Borrow [book=" + book + ", peminjam=" + peminjam + ", tanggalPinjam=" + tanggalPinjam
-                + ", tanggalKembali=" + tanggalKembali + "]";
+        return "Borrow [book=" + book + ", user=" + user + ", tanggalPinjam=" + tanggalPinjam + ", tanggalKembali="
+                + tanggalKembali + "]";
+    }
+
+    public Borrow() {
     }
 
 }

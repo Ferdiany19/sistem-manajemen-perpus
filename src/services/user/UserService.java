@@ -8,4 +8,6 @@ public interface UserService {
     void createUser(User user);
 
     List<User> getAllUsers();
+
+    User getUserById(Integer id);
 }
